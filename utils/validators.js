@@ -1,5 +1,7 @@
 const validator = require('validator')
 
+const isValid = (errors) => Object.keys(errors).length === 0
+
 module.exports.validateRegisterInput = ({
   username,
   password,
@@ -24,9 +26,7 @@ module.exports.validateRegisterInput = ({
     errors.confirmPassword = 'Passwords must match'
   }
 
-  const valid = Object.keys(errors).length === 0
-
-  return { errors, valid }
+  return { errors, valid: isValid(errors) }
 }
 
 module.exports.validateLoginInput = ({ username, password }) => {
@@ -40,7 +40,5 @@ module.exports.validateLoginInput = ({ username, password }) => {
     errors.password = 'Password must not be empty'
   }
 
-  const valid = Object.keys(errors).length === 0
-
-  return { errors, valid }
+  return { errors, valid: isValid(errors) }
 }
