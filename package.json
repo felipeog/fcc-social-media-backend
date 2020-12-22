@@ -1,0 +1,25 @@
+{
+  "name": "fcc-social-media-backend",
+  "version": "1.0.0",
+  "description": "https://www.youtube.com/watch?v=n1mdAPFq2Os",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipeog/fcc-social-media-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipeog/fcc-social-media-backend/issues"
+  },
+  "homepage": "https://github.com/felipeog/fcc-social-media-backend#readme",
+  "dependencies": {
+    "apollo-server": "^2.19.0",
+    "graphql": "^15.4.0",
+    "mongoose": "^5.11.8"
+  }
+}
