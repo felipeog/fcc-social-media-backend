@@ -4,7 +4,7 @@
   "description": "https://www.youtube.com/watch?v=n1mdAPFq2Os",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
     "dotenv": "^8.2.0",
     "graphql": "^15.4.0",
     "mongoose": "^5.11.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
