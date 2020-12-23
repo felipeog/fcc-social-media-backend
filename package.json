@@ -4,7 +4,8 @@
   "description": "https://www.youtube.com/watch?v=n1mdAPFq2Os",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "dev": "NODE_ENV=development nodemon index",
+    "start": "NODE_ENV=production node index"
   },
   "repository": {
     "type": "git",
@@ -20,13 +21,13 @@
   "dependencies": {
     "apollo-server": "^2.19.0",
     "bcryptjs": "^2.4.3",
-    "dotenv": "^8.2.0",
     "graphql": "^15.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "validator": "^13.5.2"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.6"
   }
 }

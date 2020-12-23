@@ -9,6 +9,7 @@ module.exports = {
     getPosts: async () => {
       try {
         const posts = await Post.find().sort({ createdAt: -1 })
+
         return posts
       } catch (err) {
         throw new Error(err)
@@ -36,15 +37,15 @@ module.exports = {
         throw new UserInputError('Errors', { errors })
       }
 
-      const newPost = new Post({
-        body,
-        user: user.id,
-        username: user.username,
-        createdAt: new Date().toISOString(),
-      })
-
       try {
+        const newPost = new Post({
+          body,
+          user: user.id,
+          username: user.username,
+          createdAt: new Date().toISOString(),
+        })
         const post = await newPost.save()
+
         return post
       } catch (err) {
         throw new Error(err)
