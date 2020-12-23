@@ -42,3 +42,13 @@ module.exports.validateLoginInput = ({ username, password }) => {
 
   return { errors, valid: isValid(errors) }
 }
+
+module.exports.validateCommentInput = ({ body }) => {
+  const errors = {}
+
+  if (validator.isEmpty(validator.trim(body))) {
+    errors.body = 'Comment body must not be empty'
+  }
+
+  return { errors, valid: isValid(errors) }
+}
