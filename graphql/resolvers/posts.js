@@ -1,7 +1,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 
 const Post = require('../../models/Post')
-const checkAuth = require('../../utils/checkAuth')
+const getUser = require('../../utils/getUser')
 const { validatePostInput } = require('../../utils/validators')
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
   },
   Mutation: {
     createPost: async (_, { body }, context) => {
-      const user = checkAuth(context)
+      const user = getUser(context)
       const { errors, valid } = validatePostInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -52,7 +52,7 @@ module.exports = {
       }
     },
     deletePost: async (_, { postId }, context) => {
-      const user = checkAuth(context)
+      const user = getUser(context)
 
       try {
         const post = await Post.findById(postId)
@@ -67,7 +67,7 @@ module.exports = {
       }
     },
     likePost: async (_, { postId }, context) => {
-      const { username } = checkAuth(context)
+      const { username } = getUser(context)
 
       try {
         const post = await Post.findById(postId)
