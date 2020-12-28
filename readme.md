@@ -21,4 +21,17 @@ Simple social media app using **MongoDB**, **Express**, **React**, **Node** and 
 }
 ```
 
+## How to run
+
+- Clone the repo
+- `npm i`
+- Create a `.env` file:
+
+```
+MONGODB=[mongodb-connection-string]
+SECRET_KEY=[secret-key]
+```
+
+- `npm run dev`
+
 ## [Frontend repo](https://github.com/felipeog/fcc-social-media-frontend)
