@@ -18,7 +18,7 @@ https://fcc-social-media.netlify.app
 MONGODB=[mongodb-connection-string]
 MONGODB_SECRET_KEY=[mongodb-secret-key]
 RECAPTCHA_SECRET_KEY=[recaptcha-secret-key]
-CORS_ORIGIN=[optional-cors-origin]
+CORS_ORIGIN=[optional-cors-origin] # defaults to true
 ```
 
 - `npm run dev`
