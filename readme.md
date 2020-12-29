@@ -12,6 +12,7 @@ Simple social media app using **MongoDB**, **Express**, **React**, **Node** and 
     "graphql": "^15.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
+    "node-fetch": "^2.6.1",
     "validator": "^13.5.2"
   },
   "devDependencies": {
