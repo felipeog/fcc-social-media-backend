@@ -6,11 +6,23 @@ const { validatePostInput } = require('../../utils/validators')
 
 module.exports = {
   Query: {
-    getPosts: async () => {
+    getPosts: async (_, { page, limit }) => {
       try {
-        const posts = await Post.find().sort({ createdAt: -1 })
+        const options = {
+          page: page || 1,
+          limit: limit || 8,
+          sort: { createdAt: -1 },
+        }
+        const data = await Post.paginate({}, options)
+        const result = {
+          posts: data.docs,
+          totalCount: data.totalDocs,
+          hasNextPage: data.hasNextPage,
+          nextPage: data.nextPage,
+        }
+        console.log({ result })
 
-        return posts
+        return result
       } catch (err) {
         throw new Error(err)
       }

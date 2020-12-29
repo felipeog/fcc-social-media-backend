@@ -19,6 +19,12 @@ module.exports = gql`
     likeCount: Int!
     commentCount: Int!
   }
+  type PostPagination {
+    posts: [Post]!
+    totalCount: Int!
+    hasNextPage: Boolean!
+    nextPage: Int
+  }
   type Comment {
     id: ID!
     body: String!
@@ -32,7 +38,7 @@ module.exports = gql`
   }
 
   type Query {
-    getPosts: [Post]
+    getPosts(page: Int, limit: Int): PostPagination!
     getPost(postId: ID!): Post
   }
   type Mutation {
