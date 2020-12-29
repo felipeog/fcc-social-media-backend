@@ -4,23 +4,9 @@
 
 Simple social media app using **MongoDB**, **Express**, **React**, **Node** and **GraphQL**, the "**MERNG**" stack.
 
-```json
-{
-  "dependencies": {
-    "apollo-server": "^2.19.0",
-    "bcryptjs": "^2.4.3",
-    "graphql": "^15.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.8",
-    "node-fetch": "^2.6.1",
-    "validator": "^13.5.2"
-  },
-  "devDependencies": {
-    "dotenv": "^8.2.0",
-    "nodemon": "^2.0.6"
-  }
-}
-```
+## Live demo
+
+https://fcc-social-media.netlify.app
 
 ## How to run
 
@@ -37,4 +23,10 @@ CORS_ORIGIN=[optional-cors-origin]
 
 - `npm run dev`
 
-## [Frontend repo](https://github.com/felipeog/fcc-social-media-frontend)
+## Preview
+
+[![Captura-de-Tela-2020-12-29-a-s-01-20-08.png](https://i.postimg.cc/wMSnWhv6/Captura-de-Tela-2020-12-29-a-s-01-20-08.png)](https://postimg.cc/n9Gdr9B5)
+
+## Frontend repo
+
+https://github.com/felipeog/fcc-social-media-frontend
