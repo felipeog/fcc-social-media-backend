@@ -6,7 +6,7 @@ const hasErrors = (errors) => Object.keys(errors).length === 0
 const isRecaptchaValid = async (recaptchaToken) => {
   try {
     const response = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY}&response=${recaptchaToken}`,
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
       { method: 'POST' }
     )
     const data = await response.json()

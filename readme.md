@@ -30,8 +30,8 @@ Simple social media app using **MongoDB**, **Express**, **React**, **Node** and 
 
 ```
 MONGODB=[mongodb-connection-string]
-SECRET_KEY=[secret-key]
-RECAPTCHA_KEY=[recaptcha-secret-key]
+MONGODB_SECRET_KEY=[mongodb-secret-key]
+RECAPTCHA_SECRET_KEY=[recaptcha-secret-key]
 ```
 
 - `npm run dev`

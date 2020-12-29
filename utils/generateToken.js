@@ -7,6 +7,6 @@ module.exports = (user) =>
       email: user.email,
       username: user.username,
     },
-    process.env.SECRET_KEY,
+    process.env.MONGODB_SECRET_KEY,
     { expiresIn: '1h' }
   )
