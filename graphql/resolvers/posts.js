@@ -20,7 +20,6 @@ module.exports = {
           hasNextPage: data.hasNextPage,
           nextPage: data.nextPage,
         }
-        console.log({ result })
 
         return result
       } catch (err) {
