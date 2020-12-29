@@ -12,13 +12,22 @@ module.exports = {
   Mutation: {
     register: async (
       _,
-      { registerInput: { username, password, confirmPassword, email } }
+      {
+        registerInput: {
+          username,
+          password,
+          confirmPassword,
+          email,
+          recaptchaToken,
+        },
+      }
     ) => {
-      const { valid, errors } = validateRegisterInput({
+      const { valid, errors } = await validateRegisterInput({
         username,
         password,
         confirmPassword,
         email,
+        recaptchaToken,
       })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -50,10 +59,14 @@ module.exports = {
       }
     },
 
-    login: async (_, { username, password }) => {
-      const { valid, errors } = validateLoginInput({
+    login: async (
+      _,
+      { loginInput: { username, password, recaptchaToken } }
+    ) => {
+      const { valid, errors } = await validateLoginInput({
         username,
         password,
+        recaptchaToken,
       })
       if (!valid) {
         throw new UserInputError('Errors', { errors })

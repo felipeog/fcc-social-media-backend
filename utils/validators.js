@@ -1,14 +1,36 @@
 const validator = require('validator')
+const fetch = require('node-fetch')
 
-const isValid = (errors) => Object.keys(errors).length === 0
+const hasErrors = (errors) => Object.keys(errors).length === 0
 
-module.exports.validateRegisterInput = ({
+const isRecaptchaValid = async (recaptchaToken) => {
+  try {
+    const response = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_KEY}&response=${recaptchaToken}`,
+      { method: 'POST' }
+    )
+    const data = await response.json()
+
+    return data.success
+  } catch (err) {
+    console.log('isRecaptchaValid >>>>>', err)
+    return false
+  }
+}
+
+module.exports.validateRegisterInput = async ({
   username,
   password,
   confirmPassword,
   email,
+  recaptchaToken,
 }) => {
   const errors = {}
+
+  const isHuman = await isRecaptchaValid(recaptchaToken)
+  if (!isHuman) {
+    errors.recaptchaToken = 'reCAPTCHA must pass'
+  }
 
   if (validator.isEmpty(validator.trim(username))) {
     errors.username = 'Username must not be empty'
@@ -26,11 +48,20 @@ module.exports.validateRegisterInput = ({
     errors.confirmPassword = 'Passwords must match'
   }
 
-  return { errors, valid: isValid(errors) }
+  return { errors, valid: hasErrors(errors) }
 }
 
-module.exports.validateLoginInput = ({ username, password }) => {
+module.exports.validateLoginInput = async ({
+  username,
+  password,
+  recaptchaToken,
+}) => {
   const errors = {}
+
+  const isHuman = await isRecaptchaValid(recaptchaToken)
+  if (!isHuman) {
+    errors.recaptchaToken = 'reCAPTCHA must pass'
+  }
 
   if (validator.isEmpty(validator.trim(username))) {
     errors.username = 'Username must not be empty'
@@ -40,7 +71,7 @@ module.exports.validateLoginInput = ({ username, password }) => {
     errors.password = 'Password must not be empty'
   }
 
-  return { errors, valid: isValid(errors) }
+  return { errors, valid: hasErrors(errors) }
 }
 
 module.exports.validatePostInput = ({ body }) => {
@@ -50,7 +81,7 @@ module.exports.validatePostInput = ({ body }) => {
     errors.body = 'Post body must not be empty'
   }
 
-  return { errors, valid: isValid(errors) }
+  return { errors, valid: hasErrors(errors) }
 }
 
 module.exports.validateCommentInput = ({ body }) => {
@@ -60,5 +91,5 @@ module.exports.validateCommentInput = ({ body }) => {
     errors.body = 'Comment body must not be empty'
   }
 
-  return { errors, valid: isValid(errors) }
+  return { errors, valid: hasErrors(errors) }
 }
