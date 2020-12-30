@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
+const consola = require('consola')
 
 const server = new ApolloServer({
   typeDefs: require('./graphql/typeDefs'),
@@ -20,5 +21,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => server.listen({ port: process.env.PORT || 5000 }))
-  .then(({ url }) => console.log('Server running @', url))
-  .catch((err) => console.log(err))
+  .then(({ url }) =>
+    consola.success({ message: `Server running @ ${url}`, badge: true })
+  )
+  .catch((err) => consola.error({ message: err.message, badge: true }))
