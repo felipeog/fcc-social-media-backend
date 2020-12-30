@@ -1,6 +1,6 @@
-const postsResolvers = require('./posts')
-const usersResolvers = require('./users')
-const commentsResolvers = require('./comments')
+const post = require('./post')
+const user = require('./user')
+const comment = require('./comment')
 
 module.exports = {
   Post: {
@@ -8,11 +8,11 @@ module.exports = {
     commentCount: ({ comments }) => comments.length,
   },
   Query: {
-    ...postsResolvers.Query,
+    ...post.Query,
   },
   Mutation: {
-    ...usersResolvers.Mutation,
-    ...postsResolvers.Mutation,
-    ...commentsResolvers.Mutation,
+    ...user.Mutation,
+    ...post.Mutation,
+    ...comment.Mutation,
   },
 }
