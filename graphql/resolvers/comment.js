@@ -1,13 +1,12 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
 
-const Post = require('../../models/Post')
-const getUser = require('../../utils/getUser')
+const getUserFromReq = require('../../utils/getUserFromReq')
 const { validateCommentInput } = require('../../utils/validators')
 
 module.exports = {
   Mutation: {
-    createComment: async (_, { postId, body }, context) => {
-      const { username } = getUser(context)
+    createComment: async (_, { postId, body }, { req, Post }) => {
+      const { username } = getUserFromReq(req)
       const { errors, valid } = validateCommentInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -31,8 +30,8 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deleteComment: async (_, { postId, commentId }, context) => {
-      const { username } = getUser(context)
+    deleteComment: async (_, { postId, commentId }, { req, Post }) => {
+      const { username } = getUserFromReq(req)
 
       try {
         const post = await Post.findById(postId)

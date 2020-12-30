@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { UserInputError } = require('apollo-server')
 
-const User = require('../../models/User')
 const generateToken = require('../../utils/generateToken')
 const {
   validateRegisterInput,
@@ -20,7 +19,8 @@ module.exports = {
           email,
           recaptchaToken,
         },
-      }
+      },
+      { User }
     ) => {
       const { valid, errors } = await validateRegisterInput({
         username,
@@ -61,7 +61,8 @@ module.exports = {
 
     login: async (
       _,
-      { loginInput: { username, password, recaptchaToken } }
+      { loginInput: { username, password, recaptchaToken } },
+      { User }
     ) => {
       const { valid, errors } = await validateLoginInput({
         username,

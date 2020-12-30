@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
 const { AuthenticationError } = require('apollo-server')
 
-module.exports = (context) => {
-  const authHeader = context.req.headers.authorization
+module.exports = (req) => {
+  const authHeader = req.headers.authorization
 
   if (authHeader) {
     const token = authHeader.split('Bearer ')[1]

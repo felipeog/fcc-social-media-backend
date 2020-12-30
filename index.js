@@ -6,10 +6,12 @@ const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
 const consola = require('consola')
 
+const Models = require('./models')
+
 const server = new ApolloServer({
   typeDefs: require('./graphql/typeDefs'),
   resolvers: require('./graphql/resolvers'),
-  context: ({ req }) => ({ req }),
+  context: ({ req }) => ({ req, ...Models }),
   cors: {
     origin: process.env.CORS_ORIGIN || true,
   },

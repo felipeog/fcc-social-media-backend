@@ -1,12 +1,11 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 
-const Post = require('../../models/Post')
-const getUser = require('../../utils/getUser')
+const getUserFromReq = require('../../utils/getUserFromReq')
 const { validatePostInput } = require('../../utils/validators')
 
 module.exports = {
   Query: {
-    getPosts: async (_, { page, limit }) => {
+    getPosts: async (_, { page, limit }, { Post }) => {
       try {
         const options = {
           page: page || 1,
@@ -26,7 +25,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    getPost: async (_, { postId }) => {
+    getPost: async (_, { postId }, { Post }) => {
       try {
         const post = await Post.findById(postId)
 
@@ -41,8 +40,8 @@ module.exports = {
     },
   },
   Mutation: {
-    createPost: async (_, { body }, context) => {
-      const user = getUser(context)
+    createPost: async (_, { body }, { req, Post }) => {
+      const user = getUserFromReq(req)
       const { errors, valid } = validatePostInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -62,8 +61,8 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deletePost: async (_, { postId }, context) => {
-      const user = getUser(context)
+    deletePost: async (_, { postId }, { req, Post }) => {
+      const user = getUserFromReq(req)
 
       try {
         const post = await Post.findById(postId)
@@ -77,8 +76,8 @@ module.exports = {
         throw new Error(err)
       }
     },
-    likePost: async (_, { postId }, context) => {
-      const { username } = getUser(context)
+    likePost: async (_, { postId }, { req, Post }) => {
+      const { username } = getUserFromReq(req)
 
       try {
         const post = await Post.findById(postId)
