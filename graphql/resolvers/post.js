@@ -1,6 +1,5 @@
-const { AuthenticationError, UserInputError } = require('apollo-server')
+const { AuthenticationError, UserInputError } = require('apollo-server-express')
 
-const getUserFromReq = require('../../utils/getUserFromReq')
 const { validatePostInput } = require('../../utils/validators')
 
 module.exports = {
@@ -40,8 +39,9 @@ module.exports = {
     },
   },
   Mutation: {
-    createPost: async (_, { body }, { req, Post }) => {
-      const user = getUserFromReq(req)
+    createPost: async (_, { body }, { user, isAuth, Post }) => {
+      if (!isAuth) throw new AuthenticationError('Not authenticaded')
+
       const { errors, valid } = validatePostInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -61,8 +61,8 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deletePost: async (_, { postId }, { req, Post }) => {
-      const user = getUserFromReq(req)
+    deletePost: async (_, { postId }, { user, isAuth, Post }) => {
+      if (!isAuth) throw new AuthenticationError('Not authenticaded')
 
       try {
         const post = await Post.findById(postId)
@@ -76,16 +76,21 @@ module.exports = {
         throw new Error(err)
       }
     },
-    likePost: async (_, { postId }, { req, Post }) => {
-      const { username } = getUserFromReq(req)
+    likePost: async (_, { postId }, { user, isAuth, Post }) => {
+      if (!isAuth) throw new AuthenticationError('Not authenticaded')
 
       try {
         const post = await Post.findById(postId)
         if (post) {
-          if (post.likes.find((like) => like.username === username)) {
-            post.likes = post.likes.filter((like) => like.username !== username)
+          if (post.likes.find((like) => like.username === user.username)) {
+            post.likes = post.likes.filter(
+              (like) => like.username !== user.username
+            )
           } else {
-            post.likes.push({ username, createdAt: new Date().toISOString() })
+            post.likes.push({
+              username: user.username,
+              createdAt: new Date().toISOString(),
+            })
           }
 
           await post.save()

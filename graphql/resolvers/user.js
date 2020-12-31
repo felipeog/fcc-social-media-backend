@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const { UserInputError } = require('apollo-server')
+const { UserInputError } = require('apollo-server-express')
 
 const generateToken = require('../../utils/generateToken')
 const {

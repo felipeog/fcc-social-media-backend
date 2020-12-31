@@ -1,12 +1,12 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server-express')
 
-const getUserFromReq = require('../../utils/getUserFromReq')
 const { validateCommentInput } = require('../../utils/validators')
 
 module.exports = {
   Mutation: {
-    createComment: async (_, { postId, body }, { req, Post }) => {
-      const { username } = getUserFromReq(req)
+    createComment: async (_, { postId, body }, { user, isAuth, Post }) => {
+      if (!isAuth) throw new AuthenticationError('Not authenticaded')
+
       const { errors, valid } = validateCommentInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -17,7 +17,7 @@ module.exports = {
         if (post) {
           post.comments.unshift({
             body,
-            username,
+            username: user.username,
             createdAt: new Date().toISOString(),
           })
 
@@ -30,8 +30,8 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deleteComment: async (_, { postId, commentId }, { req, Post }) => {
-      const { username } = getUserFromReq(req)
+    deleteComment: async (_, { postId, commentId }, { user, isAuth, Post }) => {
+      if (!isAuth) throw new AuthenticationError('Not authenticaded')
 
       try {
         const post = await Post.findById(postId)
@@ -41,7 +41,7 @@ module.exports = {
           )
 
           if (commentIndex >= 0) {
-            if (post.comments[commentIndex].username === username) {
+            if (post.comments[commentIndex].username === user.username) {
               post.comments.splice(commentIndex, 1)
               await post.save()
               return post
