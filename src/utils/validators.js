@@ -1,5 +1,6 @@
 const validator = require('validator')
 const fetch = require('node-fetch')
+const { ApolloError } = require('apollo-server-express')
 
 const hasErrors = (errors) => Object.keys(errors).length === 0
 
@@ -13,8 +14,7 @@ const isRecaptchaValid = async (recaptchaToken) => {
 
     return data.success
   } catch (err) {
-    console.log('isRecaptchaValid >>>>>', err)
-    return false
+    throw new ApolloError('reCaptcha verification error')
   }
 }
 
