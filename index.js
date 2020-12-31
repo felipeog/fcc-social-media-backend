@@ -18,12 +18,13 @@ const server = new ApolloServer({
   resolvers: require('./graphql/resolvers'),
   schemaDirectives: require('./graphql/schemaDirectives'),
   context: ({ req }) => {
-    const { user, isAuth } = req
+    const { user, isAuth, authError } = req
 
     return {
       req,
       user,
       isAuth,
+      authError,
       ...Models,
     }
   },
