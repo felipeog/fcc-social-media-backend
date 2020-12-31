@@ -38,10 +38,10 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createPost(body: String!): Post!
-    deletePost(postId: ID!): ID!
-    createComment(postId: ID!, body: String!): Post!
-    deleteComment(postId: ID!, commentId: ID!): Post!
-    likePost(postId: ID!): Post!
+    createPost(body: String!): Post! @isAuth
+    deletePost(postId: ID!): ID! @isAuth
+    createComment(postId: ID!, body: String!): Post! @isAuth
+    deleteComment(postId: ID!, commentId: ID!): Post! @isAuth
+    likePost(postId: ID!): Post! @isAuth
   }
 `

@@ -16,6 +16,7 @@ app.use(AuthMiddleware)
 const server = new ApolloServer({
   typeDefs: require('./graphql/typeDefs'),
   resolvers: require('./graphql/resolvers'),
+  schemaDirectives: require('./graphql/schemaDirectives'),
   context: ({ req }) => {
     const { user, isAuth } = req
 

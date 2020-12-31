@@ -4,9 +4,7 @@ const { validateCommentInput } = require('../../utils/validators')
 
 module.exports = {
   Mutation: {
-    createComment: async (_, { postId, body }, { user, isAuth, Post }) => {
-      if (!isAuth) throw new AuthenticationError('Not authenticaded')
-
+    createComment: async (_, { postId, body }, { user, Post }) => {
       const { errors, valid } = validateCommentInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -30,9 +28,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deleteComment: async (_, { postId, commentId }, { user, isAuth, Post }) => {
-      if (!isAuth) throw new AuthenticationError('Not authenticaded')
-
+    deleteComment: async (_, { postId, commentId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (post) {

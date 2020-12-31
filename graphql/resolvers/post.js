@@ -39,9 +39,7 @@ module.exports = {
     },
   },
   Mutation: {
-    createPost: async (_, { body }, { user, isAuth, Post }) => {
-      if (!isAuth) throw new AuthenticationError('Not authenticaded')
-
+    createPost: async (_, { body }, { user, Post }) => {
       const { errors, valid } = validatePostInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -61,9 +59,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deletePost: async (_, { postId }, { user, isAuth, Post }) => {
-      if (!isAuth) throw new AuthenticationError('Not authenticaded')
-
+    deletePost: async (_, { postId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (user.username === post.username) {
@@ -76,9 +72,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    likePost: async (_, { postId }, { user, isAuth, Post }) => {
-      if (!isAuth) throw new AuthenticationError('Not authenticaded')
-
+    likePost: async (_, { postId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (post) {
