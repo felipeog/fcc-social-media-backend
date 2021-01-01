@@ -18,10 +18,6 @@ const postSchema = new Schema({
       createdAt: String,
     },
   ],
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'users',
-  },
 })
 
 postSchema.plugin(mongoosePaginate)
