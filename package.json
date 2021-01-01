@@ -19,11 +19,13 @@
   },
   "homepage": "https://github.com/felipeog/fcc-social-media-backend#readme",
   "dependencies": {
-    "apollo-server": "^2.19.0",
+    "apollo-server-express": "^2.19.1",
     "bcryptjs": "^2.4.3",
+    "consola": "^2.15.0",
     "graphql": "^15.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
+    "mongoose-paginate-v2": "^1.3.13",
     "node-fetch": "^2.6.1",
     "validator": "^13.5.2"
   },

@@ -1,13 +1,10 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server-express')
 
-const Post = require('../../models/Post')
-const getUser = require('../../utils/getUser')
 const { validateCommentInput } = require('../../utils/validators')
 
 module.exports = {
   Mutation: {
-    createComment: async (_, { postId, body }, context) => {
-      const { username } = getUser(context)
+    createComment: async (_, { postId, body }, { user, Post }) => {
       const { errors, valid } = validateCommentInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -18,7 +15,7 @@ module.exports = {
         if (post) {
           post.comments.unshift({
             body,
-            username,
+            username: user.username,
             createdAt: new Date().toISOString(),
           })
 
@@ -31,9 +28,7 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deleteComment: async (_, { postId, commentId }, context) => {
-      const { username } = getUser(context)
-
+    deleteComment: async (_, { postId, commentId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (post) {
@@ -42,7 +37,7 @@ module.exports = {
           )
 
           if (commentIndex >= 0) {
-            if (post.comments[commentIndex].username === username) {
+            if (post.comments[commentIndex].username === user.username) {
               post.comments.splice(commentIndex, 1)
               await post.save()
               return post

@@ -1,21 +1,30 @@
-const { AuthenticationError, UserInputError } = require('apollo-server')
+const { AuthenticationError, UserInputError } = require('apollo-server-express')
 
-const Post = require('../../models/Post')
-const getUser = require('../../utils/getUser')
 const { validatePostInput } = require('../../utils/validators')
 
 module.exports = {
   Query: {
-    getPosts: async () => {
+    getPosts: async (_, { page, limit }, { Post }) => {
       try {
-        const posts = await Post.find().sort({ createdAt: -1 })
+        const options = {
+          page: page || 1,
+          limit: limit || 8,
+          sort: { createdAt: -1 },
+        }
+        const data = await Post.paginate({}, options)
+        const result = {
+          posts: data.docs,
+          totalCount: data.totalDocs,
+          hasNextPage: data.hasNextPage,
+          nextPage: data.nextPage,
+        }
 
-        return posts
+        return result
       } catch (err) {
         throw new Error(err)
       }
     },
-    getPost: async (_, { postId }) => {
+    getPost: async (_, { postId }, { Post }) => {
       try {
         const post = await Post.findById(postId)
 
@@ -30,8 +39,7 @@ module.exports = {
     },
   },
   Mutation: {
-    createPost: async (_, { body }, context) => {
-      const user = getUser(context)
+    createPost: async (_, { body }, { user, Post }) => {
       const { errors, valid } = validatePostInput({ body })
       if (!valid) {
         throw new UserInputError('Errors', { errors })
@@ -51,14 +59,12 @@ module.exports = {
         throw new Error(err)
       }
     },
-    deletePost: async (_, { postId }, context) => {
-      const user = getUser(context)
-
+    deletePost: async (_, { postId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (user.username === post.username) {
           await post.delete()
-          return 'Post deleted'
+          return postId
         } else {
           throw new AuthenticationError('Action not allowed')
         }
@@ -66,16 +72,19 @@ module.exports = {
         throw new Error(err)
       }
     },
-    likePost: async (_, { postId }, context) => {
-      const { username } = getUser(context)
-
+    likePost: async (_, { postId }, { user, Post }) => {
       try {
         const post = await Post.findById(postId)
         if (post) {
-          if (post.likes.find((like) => like.username === username)) {
-            post.likes = post.likes.filter((like) => like.username !== username)
+          if (post.likes.find((like) => like.username === user.username)) {
+            post.likes = post.likes.filter(
+              (like) => like.username !== user.username
+            )
           } else {
-            post.likes.push({ username, createdAt: new Date().toISOString() })
+            post.likes.push({
+              username: user.username,
+              createdAt: new Date().toISOString(),
+            })
           }
 
           await post.save()

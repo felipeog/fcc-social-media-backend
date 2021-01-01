@@ -1,4 +1,5 @@
 const { model, Schema } = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const postSchema = new Schema({
   body: String,
@@ -17,10 +18,8 @@ const postSchema = new Schema({
       createdAt: String,
     },
   ],
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'users',
-  },
 })
+
+postSchema.plugin(mongoosePaginate)
 
 module.exports = model('Post', postSchema)
